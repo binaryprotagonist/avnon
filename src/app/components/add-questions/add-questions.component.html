@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="questions-list">
+                <form method="post" [formGroup]="question_answer">
+                <div formArrayName="items"
+                    *ngFor="let item of question_answer.get('items')['controls']; let i = index;">
+
+                    <div [formGroupName]="i">
+                        <h2>Q{{i+1}}. {{question_answer.get('items')['controls'][i].value.question}}</h2>
+                        <input class="form-control" *ngIf="question_answer.get('items')['controls'][i].value.type == 'option1'" formControlName="paragraph" placeholder="Answer">
+
+                        <div *ngIf="question_answer.get('items')['controls'][i].value.type == 'option2'">
+                            <div formArrayName="option" *ngFor="let check of question_answer.get('items')['controls'][i]['controls']['option']['controls']; let j = index" class="form-check">
+                                <input class="form-check-input" (change)="changeCheckBox(check)" [value]="question_answer.get('items')['controls'][i]['controls']['option']['controls'][j].value.value" type="checkbox" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    {{question_answer.get('items')['controls'][i]['controls']['option']['controls'][j].value.name}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+                </form>
+            </div>
+
+
+            <div class="buttons">
+                <button class="btn btn-primary mt-5" data-bs-toggle="modal" data-bs-target="#myModal">Add questions</button>
+                <button class="btn btn-primary mt-3" (click)="review()">Review Answers</button>
+            </div>
+        </div>
+    </div>
+
+  </div>
+  
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Add a question</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form method="post" [formGroup]="questionForm">
+            <div class="form-group">
+                <label>Please enter your question in the field below.</label>
+                <textarea rows="3" class="form-control" formControlName="question"></textarea>
+              </div>
+              <div class="form-group mt-3">
+                <label>Please select the answer type.</label>
+                <div class="form-check">
+                    <input class="form-check-input mx-2" type="radio" formControlName="answer_type" value="option1" id="flexRadioDefault1">
+                    <label class="form-check-label" for="radio1">Paragraph</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input mx-2" type="radio" formControlName="answer_type" value="option2" id="flexRadioDefault1">
+                  <label class="form-check-label" for="radio2">Checkbox List</label>
+                </div>
+              </div>
+                <div id="demo" [hidden]="questionForm.value.answer_type != 'option2'">
+                  <div class="form-group" formArrayName="options" *ngFor="let item of questionForm.get('options')['controls']; let i = index">
+                    <label>Please enter option</label>
+                    <input type="text" [formControlName]="i" class="form-control">
+                  </div>
+                  <button class="btn btn-primary mt-3" (click)="addMoreFields()">Add another answer</button>
+                </div>
+          </form>
+        </div>
+  
+        <!-- Modal footer -->
+
+        <p class="text-danger text-center">{{message}}</p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="add()">Add question</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+  
+  

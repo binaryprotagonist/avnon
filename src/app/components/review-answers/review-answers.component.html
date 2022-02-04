@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="question-answer mt-5" *ngFor="let questions of questions_Answer_list; let i = index">
+                <div class="questions">
+                    <h2>Q{{i+1}}. {{questions.question}}</h2>
+                </div>
+                <div *ngIf="questions.type == 'option1'" class="answer">
+                    <p>{{questions.paragraph}}</p>
+                </div>
+                <div *ngIf="questions.type == 'option2'" class="answer">
+                    <p *ngFor="let option of questions.option">{{option.name}}</p>
+                </div>
+            </div>
+
+            <!-- <div class="question-answer">
+                <p>You do not have any questions yet</p>
+            </div> -->
+
+
+            <button class="btn btn-primary mt-5" routerLink="/">Back</button>
+        </div>
+    </div>
+</div>
+
